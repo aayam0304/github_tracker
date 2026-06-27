@@ -351,39 +351,43 @@ const Home: React.FC = () => {
               </TableHead>
 
               <TableBody>
-                {currentFilteredData.map((item) => (
-                  <TableRow key={item.id}>
-
-                    <TableCell sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        {getStatusIcon(item)}
-                        <Link
-                            href={item.html_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            underline="hover"
-                            sx={{ color: theme.palette.primary.main }}
-                        >
-                            {item.title}
-                        </Link>
-                    </TableCell>
-
-
-                    <TableCell align="center">
-                      {item.repository_url.split("/").slice(-1)[0]}
-                    </TableCell>
-
-                    <TableCell align="center">
-                      {item.pull_request?.merged_at ? "merged" : item.state}
-                    </TableCell>
-
-                    <TableCell>{formatDate(item.created_at)}</TableCell>
-
-                  </TableRow>
-                ))}
-              </TableBody>
+                    {currentFilteredData.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={4} align="center" sx={{ py: 6, color: "text.secondary" }}>
+                          {tab === 0 ? "No issues found for this user" : "No pull requests available"}
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      currentFilteredData.map((item) => (
+                        <TableRow key={item.id}>
+                          <TableCell sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            {getStatusIcon(item)}
+                            <Link
+                              href={item.html_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              underline="hover"
+                              sx={{ color: theme.palette.primary.main }}
+                            >
+                              {item.title}
+                            </Link>
+                          </TableCell>
+                  
+                          <TableCell align="center">
+                            {item.repository_url.split("/").slice(-1)[0]}
+                          </TableCell>
+                  
+                          <TableCell align="center">
+                            {item.pull_request?.merged_at ? "merged" : item.state}
+                          </TableCell>
+                  
+                          <TableCell>{formatDate(item.created_at)}</TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
 
             </Table>
-
             <TablePagination
               component="div"
               count={totalCount}
